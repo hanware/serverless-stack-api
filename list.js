@@ -10,9 +10,9 @@ export const main = handler(async (event, context) => {
         // 'ExpressionAttributeValues' defines the value in the condition
         // - ':userId': defines 'userId' to be Identity Pool identity id
         //   of the authenticated user
-        KeyConditionExpression: "userId = :userId",
+        KeyConditionExpression: "dealerId = :dealerId",
         ExpressionAttributeValues: {
-            ":userId": event.requestContext.identity.cognitoIdentityId
+            ":dealerId": event.requestContext.identity.cognitoIdentityId
         }
     };
 
