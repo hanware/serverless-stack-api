@@ -15,8 +15,7 @@ export const main = handler(async (event, context) => {
         // - 'attachment': parsed from request body
         // - 'createdAt': current Unix timestamp
         Item: {
-            dealershipId: 
-            event.requestContext.identity.cognitoIdentityId,
+            dealershipId: uuid.v1(),
             name: data.name,
             content: data.content,
             attachment: data.attachment,
