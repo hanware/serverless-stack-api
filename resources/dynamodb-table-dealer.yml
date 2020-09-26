@@ -1,18 +1,17 @@
 Resources:
-  DealershipTable:
+  DealerTable:
     Type: AWS::DynamoDB::Table
     Properties:
-      TableName: ${self:custom.tableName}
+      TableName: ${self:custom.tableDealer}
       AttributeDefinitions:
-        - AttributeName: country
+        - AttributeName: dealership
           AttributeType: S
-        - AttributeName: dealershipId
+        - AttributeName: dealerId
           AttributeType: S
       KeySchema:
-        - AttributeName: country
+        - AttributeName: dealership
           KeyType: HASH
-        - AttributeName: dealershipId
+        - AttributeName: dealerId
           KeyType: RANGE
       # Set the capacity to auto-scale
       BillingMode: PAY_PER_REQUEST
-  

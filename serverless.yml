@@ -1,4 +1,4 @@
-service: notes-app-2-api
+service: appreciation-app-1-api
 
 # Create an optimized package for our functions
 package:
@@ -14,7 +14,8 @@ custom:
   # commands. Or fallsback to what we have set in the provider section.
   stage: ${opt:stage, self:provider.stage}
   # Set the table name here so we can use it while testing locally
-  tableName: ${self:custom.stage}-notes
+  tableName: ${self:custom.stage}-dealerships
+  tableDealer: ${self:custom.stage}-dealer
 
 provider:
   name: aws
@@ -28,6 +29,7 @@ provider:
   # under process.env.
   environment:
     tableName: ${self:custom.tableName}
+    tableDealer: ${self:custom.tableDealer}
     stripeSecretKey: ${env:STRIPE_SECRET_KEY}
     
   # 'iamRoleStatements' defines the permission policy for the Lambda function.
@@ -45,7 +47,7 @@ provider:
       # Restrict our IAM role permissions to
       # the specific table for the stage
       Resource:
-        - "Fn::GetAtt": [ DealerTable, Arn ]
+        - "Fn::GetAtt": [ DealershipTable, Arn ]
 
 functions:
   # Defines an HTTP API endpoint that calls the main function in create.js
@@ -58,7 +60,21 @@ functions:
     handler: create.main
     events:
       - http:
-          path: notes
+          path: dealerships
+          method: post
+          cors: true
+          authorizer: aws_iam
+  # Defines an HTTP API endpoint that calls the main function in create.js
+  # - path: url path is /notes
+  # - method: POST request
+  # - cors: enabled CORS (Cross-Origin Resource Sharing) for browser cross
+  #     domain api call
+  # - authorizer: authenticate using the AWS IAM role
+  createdealer:
+    handler: createdealer.main
+    events:
+      - http:
+          path: dealer
           method: post
           cors: true
           authorizer: aws_iam
@@ -69,10 +85,21 @@ functions:
     handler: get.main
     events:
       - http:
-          path: notes/{id}
+          path: dealerships/{id}
           method: get
           cors: true
           authorizer: aws_iam
+  getdealer:
+    # Defines an HTTP API endpoint that calls the main function in get.js
+    # - path: url path is /notes/{id}
+    # - method: GET request
+    handler: getdealer.main
+    events:
+      - http:
+          path: dealer/{id}/{dealerid}
+          method: get
+          cors: true
+          authorizer: aws_iam        
   list:
     # Defines an HTTP API endpoint that calls the main function in list.js
     # - path: url path is /notes
@@ -80,7 +107,18 @@ functions:
     handler: list.main
     events:
       - http:
-          path: notes
+          path: dealerships
+          method: get
+          cors: true
+          authorizer: aws_iam
+  listdealer:
+    # Defines an HTTP API endpoint that calls the main function in list.js
+    # - path: url path is /notes
+    # - method: GET request
+    handler: listdealer.main
+    events:
+      - http:
+          path: dealer
           method: get
           cors: true
           authorizer: aws_iam
@@ -91,7 +129,18 @@ functions:
     handler: update.main
     events:
       - http:
-          path: notes/{id}
+          path: dealerships/{id}
+          method: put
+          cors: true
+          authorizer: aws_iam
+  updatedealer:
+    # Defines an HTTP API endpoint that calls the main function in update.js
+    # - path: url path is /notes/{id}
+    # - method: PUT request
+    handler: updatedealer.main
+    events:
+      - http:
+          path: dealer/{id}
           method: put
           cors: true
           authorizer: aws_iam
@@ -102,7 +151,18 @@ functions:
     handler: delete.main
     events:
       - http:
-          path: notes/{id}
+          path: dealerships/{id}
+          method: delete
+          cors: true
+          authorizer: aws_iam
+  deletedealer:
+    # Defines an HTTP API endpoint that calls the main function in delete.js
+    # - path: url path is /notes/{id}
+    # - method: DELETE request
+    handler: deletedealer.main
+    events:
+      - http:
+          path: dealer/{id}
           method: delete
           cors: true
           authorizer: aws_iam
@@ -124,6 +184,7 @@ resources:
   - ${file(resources/api-gateway-errors.yml)}
   # DynamoDB
   - ${file(resources/dynamodb-table.yml)}
+  - ${file(resources/dynamodb-table-dealer.yml)}
   # S3
   - ${file(resources/s3-bucket.yml)}
   # Cognito

@@ -3,16 +3,16 @@ import dynamoDb from "./libs/dynamodb-lib";
 
 export const main = handler(async (event, context) => {
     const params = {
-        TableName: process.env.tableName,
+        TableName: process.env.tableDealer,
         // 'KeyConditionExpression' defines the condition for the query
         // - 'dealershipId = :dealershipId': only return items with matching 'dealershipId'
         //   partition key
         // 'ExpressionAttributeValues' defines the value in the condition
         // - ':dealershipId': defines 'dealershipId' to be Identity Pool identity id
         //   of the authenticated user
-        KeyConditionExpression: "country = :country",
+        KeyConditionExpression: "dealership = :dealership",
         ExpressionAttributeValues: {
-            ":country": "Canada"
+            ":dealership": event.pathParameters.dealership
         }
     };
 

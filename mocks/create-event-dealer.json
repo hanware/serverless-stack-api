@@ -1,0 +1,6 @@
+{
+    "body": "{\"dealerfirstname\":\"Dan\",\"dealerlastname\":\"Smith\"}",
+    "pathParameters": {
+        "id": "acc43690-feb4-11ea-a49f-8ba34de0ab0c"
+    }
+}

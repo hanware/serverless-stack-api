@@ -1,7 +1,10 @@
 {
+    "pathParameters": {
+        "id": "2978bff0-fe8b-11ea-a2a0-b715ad65ad65"
+    },
     "requestContext": {
         "identity": {
-            "cognitoIdentityId": "USER-SUB-1234"
+            "dealershipId": "USER-SUB-1234"
         }
     }
 }
