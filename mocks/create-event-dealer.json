@@ -1,5 +1,5 @@
 {
-    "body": "{\"dealerfirstname\":\"Dan\",\"dealerlastname\":\"Smith\"}",
+    "body": "{\"dealerfirstname\":\"Dan\",\"dealerlastname\":\"Smith\",\"email\":\"h@h.com\",\"phone\":\"7778889990\"}",
     "pathParameters": {
         "id": "acc43690-feb4-11ea-a49f-8ba34de0ab0c"
     }

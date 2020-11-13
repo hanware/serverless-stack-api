@@ -16,6 +16,7 @@ custom:
   # Set the table name here so we can use it while testing locally
   tableName: ${self:custom.stage}-dealerships
   tableDealer: ${self:custom.stage}-dealer
+  tableOrders: ${self:custom.stage}-orders
 
 provider:
   name: aws
@@ -30,6 +31,7 @@ provider:
   environment:
     tableName: ${self:custom.tableName}
     tableDealer: ${self:custom.tableDealer}
+    tableOrders: ${self:custom.tableOrders}
     stripeSecretKey: ${env:STRIPE_SECRET_KEY}
     
   # 'iamRoleStatements' defines the permission policy for the Lambda function.
@@ -48,6 +50,8 @@ provider:
       # the specific table for the stage
       Resource:
         - "Fn::GetAtt": [ DealershipTable, Arn ]
+        - "Fn::GetAtt": [ DealerTable, Arn ]
+        - "Fn::GetAtt": [ OrdersTable, Arn ]
 
 functions:
   # Defines an HTTP API endpoint that calls the main function in create.js
@@ -74,10 +78,19 @@ functions:
     handler: createdealer.main
     events:
       - http:
-          path: dealer
+          path: dealer/{id}
           method: post
           cors: true
           authorizer: aws_iam
+  # Defines an HTTP API endpoint that calls the main function in create.js
+  # - path: url path is /notes
+  # - method: POST request
+  createorder:
+    handler: createorder.main
+    events:
+      - http:
+          path: order
+          method: post
   get:
     # Defines an HTTP API endpoint that calls the main function in get.js
     # - path: url path is /notes/{id}
@@ -118,7 +131,7 @@ functions:
     handler: listdealer.main
     events:
       - http:
-          path: dealer
+          path: dealers/{id}
           method: get
           cors: true
           authorizer: aws_iam
@@ -185,6 +198,7 @@ resources:
   # DynamoDB
   - ${file(resources/dynamodb-table.yml)}
   - ${file(resources/dynamodb-table-dealer.yml)}
+  - ${file(resources/dynamodb-table-order.yml)}
   # S3
   - ${file(resources/s3-bucket.yml)}
   # Cognito

@@ -19,6 +19,8 @@ export const main = handler(async (event, context) => {
             dealerId: uuid.v1(),
             dealerfirstname: data.dealerfirstname,
             dealerlastname: data.dealerlastname,
+            phone: data.phone,
+            email: data.email,
             createdAt: Date.now()
         }
     };

@@ -12,7 +12,7 @@ export const main = handler(async (event, context) => {
         //   of the authenticated user
         KeyConditionExpression: "dealership = :dealership",
         ExpressionAttributeValues: {
-            ":dealership": event.pathParameters.dealership
+            ":dealership": event.pathParameters.id
         }
     };
 

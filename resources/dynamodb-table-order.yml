@@ -1,0 +1,17 @@
+Resources:
+  OrdersTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: ${self:custom.tableOrders}
+      AttributeDefinitions:
+        - AttributeName: dealerId
+          AttributeType: S
+        - AttributeName: orderId
+          AttributeType: S
+      KeySchema:
+        - AttributeName: dealerId
+          KeyType: HASH
+        - AttributeName: orderId
+          KeyType: RANGE
+      # Set the capacity to auto-scale
+      BillingMode: PAY_PER_REQUEST
